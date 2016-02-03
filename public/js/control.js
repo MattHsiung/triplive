@@ -36,12 +36,35 @@ $(document).ready(function() {
 		resetMarkers()
 		$('.day').removeClass('current-day')
 		$(this).toggleClass('current-day')
-		var currentDay = $(this).text()
+		var currentDay = getDay()+1
 		$('#currentDay').text('Day '+currentDay)
 		$('.list-group').empty()
 		renderCurrentDay(currentDay)
 	}
 	
+	function deleteDay(){
+		if(trip.length===1) return;
+		console.log(getDay());
+		resetMarkers();
+		trip.splice(getDay(), 1)
+		if(getDay()>0)selectDay.call($('.current-day').prev())
+		else selectDay.call($('.current-day'))	
+		$('.current-day').next().remove()
+		render($('.current-day'));
+		function render(el){
+			
+			if (el.next().text()=="") {
+				return;
+			} else {
+				el.next().text(el.next().text()-1);
+				render(el.next());
+			}
+		}
+
+
+	}
+
+
 	function renderCurrentDay(currentDay){
 		var day = trip[Number(currentDay)-1]
 		for( var key in day){
@@ -54,8 +77,6 @@ $(document).ready(function() {
 	}
 
 	function resetMarkers(mappy){
-		//clear all the markers for the given day
-
 		var mappy = mappy || null;
 
 		for(var key in trip[getDay()]) {
@@ -63,9 +84,6 @@ $(document).ready(function() {
 				event.marker.setMap(mappy);
 			})
 		}
-			// markers.forEach(function(el){
-			// 	el.setMap(map);
-			// })
 	}
 
 
@@ -155,11 +173,10 @@ $(document).ready(function() {
 			}
 		})
 			
-			
-			
 		})
 	}
 
+	$('#day-title').on('click', '.remove', deleteDay)
 	$(document).on('click', '.day', selectDay)
 	
 
