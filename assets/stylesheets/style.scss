@@ -1,5 +1,5 @@
-$light-blue: #a8c9dd;
-$medium-brown: #736357;
+$light-blue: #2d0016;
+$medium-brown: #617365;
 $transparent: rgba(0,0,0,0);
 
 $screen-sm: 768px;
@@ -10,7 +10,9 @@ body {
   font-family: 'Varela Round', sans-serif;
   min-width: -webkit-min-content;
 }
-
+hr {
+  margin:0;
+}
 #app {
   border-left: 2px solid lighten($medium-brown, 25%);
   border-right: 2px solid lighten($medium-brown, 25%);
