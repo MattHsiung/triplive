@@ -9,19 +9,20 @@ $(document).ready(function() {
 
 	var trip = [
 		{
-			hotels: [],
-			restaurants: [],
-			activities: []
+			hotel: [],
+			restaurant: [],
+			activity: []
 		}
 	]
+
 
 	$('.plus').on('click',
 	function addDay() {
 		if (trip.length>6) return;
 		trip.push( { 
-			hotels: [],
-			restaurants:[],
-			activities: []
+			hotel: [],
+			restaurant:[],
+			activity: []
 		});
 		
 		$('.day-buttons').append('<button class="btn btn-circle day-btn day">'+trip.length+'</button> ')
@@ -32,25 +33,56 @@ $(document).ready(function() {
 	
 
 	function selectDay(){
+		resetMarkers()
+		$('.day').removeClass('current-day')
+		$(this).toggleClass('current-day')
 		var currentDay = $(this).text()
 		$('#currentDay').text('Day '+currentDay)
+		$('.list-group').empty()
+		renderCurrentDay(currentDay)
+	}
+	
+	function renderCurrentDay(currentDay){
+		var day = trip[Number(currentDay)-1]
+		for( var key in day){
+			day[key].forEach(function(el){
+				$("#my-"+key).append(itineraryItem(el.name))
+				resetMarkers(map);
+			})
+		}
 		
 	}
 
+	function resetMarkers(mappy){
+		//clear all the markers for the given day
 
-  	function makeMarker(place, id){
+		var mappy = mappy || null;
+
+		for(var key in trip[getDay()]) {
+			trip[getDay()][key].forEach(function (event) {
+				event.marker.setMap(mappy);
+			})
+		}
+			// markers.forEach(function(el){
+			// 	el.setMap(map);
+			// })
+	}
+
+
+
+  	function makeMarker(event, id){
   		myLatLng = {
-			lat: place.location[0],
-			lng: place.location[1]
+			lat: event.place[0].location[0],
+			lng: event.place[0].location[1]
 		}
 
-		var marker = new google.maps.Marker({
+		event.marker = new google.maps.Marker({
 			position: myLatLng,
 			map: map,
 			icon: icons[id],
 			animation: google.maps.Animation.BOUNCE
 		});
-		markers.push(marker)
+		markers.push(event.marker)
 
 		var bounds = new google.maps.LatLngBounds();
 			for (var i = 0; i < markers.length; i++) {
@@ -59,7 +91,6 @@ $(document).ready(function() {
 
 		map.fitBounds(bounds);
 
-		return marker;
   	}
 
   	function removeMarker(marker) {
@@ -72,46 +103,71 @@ $(document).ready(function() {
 	}
 
 	function findLocation(id, eventName){
-		id ==='activity' ? arr = window['activities']:arr = window[id+'s'];
+		var arr = turnerize(id)
 		arr.forEach(function(el){
 			if(el.name === eventName) place = el.place[0]
 		})
 		return place;
 	}
+
+	function findEvent(id, eventName){
+		var arr = turnerize(id)
+		var toReturn;
+		arr.forEach(function(el){
+			if(el.name === eventName) toReturn = el;
+		})
+		return toReturn;
+	}
+	
+	function turnerize(id){
+		var turnt;
+		id ==='activity' ? turnt = window['activities']:turnt = window[id+'s'];
+		return turnt
+	}
+			
+	function getDay(){
+		return Number($('.current-day').text())-1;
+	}
 			
 	function addEvent(id){
+
 		$("#"+id).on('click',  '.btn-primary', function(){
 			var eventName = $("#"+id+" select option:selected").val()
-			var place=findLocation(id, eventName);
+			var currentEvent = findEvent(id, eventName);
 
-			$("#my-"+id).append(itineraryItem(eventName))
-			
-			makeMarker(place, id);
-			
-			//trip.day.hotel/r/a.marker=makeMarker(place, id);
-
-			//trip.day.hotel/r/a.name=eventName;
+			if(trip[getDay()][id].indexOf(currentEvent)<0 ){
+				trip[getDay()][id].push(currentEvent);
+				$("#my-"+id).append(itineraryItem(eventName))
+				makeMarker(currentEvent, id);
+			}			
 		})
 	}
 
 	function removeEvent(id){
-		$("#"+id).on('click',  '.remove', function(){
-			var eventName=$this.id;
-			console.log(eventName)
-			var place=findLocation(id, eventName);
-			$("#my-"+id).remove(itineraryItem(eventName))
+		$("#my-"+id).on('click',  '.remove', function(){
+		$(this).parent().remove();
+
+		var eventName=$(this).siblings().text()
+		trip[getDay()][id].forEach(function (event, index, array) {
+			if(event.name === eventName) {
+				removeMarker(event.marker);
+				array.splice(index,1);
+			}
+		})
 			
-			removeMarker(place,id);
 			
-			//remove from trip
 			
 		})
 	}
 
 	$(document).on('click', '.day', selectDay)
 	
+
 	  addEvent('hotel')
 	  addEvent('restaurant')
-	  addEvent('activity')
+	  addEvent('activity') 
+	  removeEvent('hotel')
+	  removeEvent('restaurant')
+	  removeEvent('activity')
 });
 console.log(hotels)
