@@ -1,5 +1,5 @@
-$light-blue: #2d0016;
-$medium-brown: #617365;
+$light-blue: black;
+$medium-brown: #ffe42c;
 $transparent: rgba(0,0,0,0);
 
 $screen-sm: 768px;
@@ -17,7 +17,9 @@ hr {
   border-left: 2px solid lighten($medium-brown, 25%);
   border-right: 2px solid lighten($medium-brown, 25%);
 }
-
+.container-flex{
+  box-shadow: 2px 0px 5px black;
+}
 .navbar-inverse {
   background: $medium-brown;
   border-color: darken($medium-brown, 10%);
@@ -97,12 +99,12 @@ select {
 }
 
 h4 {
-  color: #aaa;
+  color: #e7cd79;
   margin-top: 0;
 }
 
 h3 {
-  color: darken($medium-brown, 5%);
+  color: darken(black, 5%);
   text-align: center;
   margin-top: 0;
 }
@@ -141,6 +143,7 @@ h3 {
 
 
 .panel-default {
+  box-shadow: 2px 2px 5px black;
   background: lighten($medium-brown, 53%);
   border-radius: 8px;
   border-width: 0;
@@ -150,12 +153,20 @@ h3 {
     border-radius: 8px 8px 0 0;
   }
   .panel-body {
+  background-color: #282828;
     padding: 5px 15px;
     > div {
       margin-top: 20px;
       margin-bottom: 20px;
     }
   }
+}
+
+.selectpicker{
+  background-color: #ffe42c;
+}
+.title{
+  color:#ffe42c;
 }
 
 .itinerary-item {
@@ -173,9 +184,12 @@ h3 {
 }
 
 #day-title {
+  background-color:#ffe42c;
+  box-shadow: 2px 2px 5px black;
+  color:#282828;
   display: inline-block;
   padding: 5px;
-  border: 1px solid $medium-brown;
+  border: 1px solid #282828;
   border-radius: 5px;
   > * {
     display: inline-block;

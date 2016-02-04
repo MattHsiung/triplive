@@ -15,7 +15,6 @@ $(document).ready(function() {
 		}
 	]
 
-
 	$('.plus').on('click',
 	function addDay() {
 		if (trip.length>6) return;
@@ -73,7 +72,6 @@ $(document).ready(function() {
 				resetMarkers(map);
 			})
 		}
-		
 	}
 
 	function resetMarkers(mappy){
@@ -81,7 +79,8 @@ $(document).ready(function() {
 
 		for(var key in trip[getDay()]) {
 			trip[getDay()][key].forEach(function (event) {
-				event.marker.setMap(mappy);
+				event.marker.setMap(null);
+				if (mappy) makeMarker(event, key);
 			})
 		}
 	}
@@ -97,7 +96,7 @@ $(document).ready(function() {
 		event.marker = new google.maps.Marker({
 			position: myLatLng,
 			map: map,
-			icon: icons[id],
+			icon: '/images/'+Math.floor(Math.random()*10) +'.gif' ,
 			animation: google.maps.Animation.BOUNCE
 		});
 		markers.push(event.marker)

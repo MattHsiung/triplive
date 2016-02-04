@@ -12,10 +12,15 @@
   <div id="control-panel" class="col-sm-4 col-lg-3 clearfix">
     <div class="col-xs-6 col-sm-12">
       <div class="panel panel-default">
+      <div class="panel-heading">
+          <div >
+           <h3>Destinations</h3>
+          </div>
+        </div>
         <div class="panel-body">
           <div id="hotel">
             <h4>Hotels</h4>
-            <select id="hotel_name">
+            <select id="hotel_name" class="selectpicker">
               {% for hotel in all_hotels %}
               <option>{{ hotel.name }}</option>
               {% endfor %}
@@ -24,7 +29,7 @@
           </div>
           <div id='restaurant'>
             <h4>Restaurants</h4>
-            <select>
+            <select class="selectpicker">
               {% for restaurant in all_restaurants %}
               <option>{{ restaurant.name }}</option>
               {% endfor %}
@@ -33,7 +38,7 @@
           </div>
           <div id='activity'>
             <h4>Activities</h4>
-            <select>
+            <select class="selectpicker">
               {% for activity in all_activities %}
               <option>{{ activity.name }}</option>
               {% endfor %}

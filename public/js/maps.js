@@ -29,32 +29,4 @@ function initialize_gmaps() {
 }
 
 
-
-var styleArr = [{
-  featureType: 'landscape',
-  stylers: [{ saturation: 100 }, { lightness: 60 }, {hue: 80}]
-}, {
-  featureType: 'road.local',
-  stylers: [{ saturation: -100 }, { lightness: 40 }, { visibility: 'on' }]
-}, {
-  featureType: 'transit',
-  stylers: [{ saturation: -0 }, { visibility: 'simplified' }]
-}, {
-  featureType: 'administrative.province',
-  stylers: [{ visibility: 'off' }]
-}, {
-  featureType: 'water',
-  stylers: [{ visibility: 'on' }, { lightness: 30 }, {hue: 45}]
-}, {
-  featureType: 'road.highway',
-  elementType: 'geometry.fill',
-  stylers: [{ color: '#ef8c25' }, { lightness: 40 }]
-}, {
-  featureType: 'road.highway',
-  elementType: 'geometry.stroke',
-  stylers: [{ visibility: 'off' }]
-}, {
-  featureType: 'poi.park',
-  elementType: 'geometry.fill',
-  stylers: [{ color: '#b6c54c' }, { lightness: 40 }, { saturation: -40 }]
-}];
+var styleArr=[{"featureType":"landscape","stylers":[{"visibility":"on"},{"color":"#e7cd79"},{"weight":0.1}]},{"featureType":"water","stylers":[{"visibility":"simplified"},{"color":"#282828"}]},{"featureType":"landscape.natural.landcover","elementType":"geometry","stylers":[{"visibility":"on"},{"color":"#d6bc68"}]},{"featureType":"administrative.locality","elementType":"geometry","stylers":[{"visibility":"off"},{"color":"#d6bc68"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"visibility":"on"},{"color":"#d6bc68"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"on"},{"color":"#d6bc68"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"visibility":"off"},{"color":"#d6bc68"}]},{"featureType":"poi"},{"featureType":"transit.line","stylers":[{"color":"#d6bc68"},{"visibility":"on"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"},{"weight":1},{"color":"#e9d9a6"}]},{"featureType":"road","elementType":"geometry","stylers":[{"visibility":"simplified"},{"color":"#e9d9a6"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"visibility":"simplified"},{"color":"#e9d9a6"}]},{"featureType":"poi.business","stylers":[{"color":"#e9d9a6"},{"visibility":"on"}]},{},{"featureType":"poi.government","stylers":[{"visibility":"off"}]},{"featureType":"poi.school","stylers":[{"visibility":"off"}]},{"featureType":"administrative","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","stylers":[{"visibility":"off"}]},{"featureType":"poi.attraction","elementType":"geometry","stylers":[{"visibility":"off"},{"color":"#cfb665"}]},{"featureType":"poi.place_of_worship","stylers":[{"visibility":"off"}]},{"featureType":"poi.sports_complex","stylers":[{"visibility":"off"}]},{},{"featureType":"road.arterial","elementType":"labels.text.stroke","stylers":[{"color":"#cfb665"},{"visibility":"off"}]},{"featureType":"road.highway","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"road.highway.controlled_access","stylers":[{"visibility":"off"}]},{"featureType":"road"}]

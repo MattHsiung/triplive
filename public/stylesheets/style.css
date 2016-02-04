@@ -1,6 +1,6 @@
 body {
   padding-top: 50px;
-  background: #b6c1b8;
+  background: #fff9cf;
   font-family: 'Varela Round', sans-serif;
   min-width: -webkit-min-content; }
 
@@ -8,15 +8,18 @@ hr {
   margin: 0; }
 
 #app {
-  border-left: 2px solid #a3b1a6;
-  border-right: 2px solid #a3b1a6; }
+  border-left: 2px solid #fff4ac;
+  border-right: 2px solid #fff4ac; }
+
+.container-flex {
+  box-shadow: 2px 0px 5px black; }
 
 .navbar-inverse {
-  background: #617365;
-  border-color: #4a574d; }
+  background: #ffe42c;
+  border-color: #f8d800; }
 
 .navbar-inverse .navbar-nav > li > a, .navbar-inverse .navbar-brand {
-  color: #2d0016; }
+  color: black; }
 
 .navbar-inverse .navbar-brand {
   padding: 12px 15px;
@@ -29,19 +32,19 @@ hr {
     vertical-align: middle; }
 
 .navbar-inverse .navbar-nav > .active > a {
-  box-shadow: inset 0 0 10px #3e4a41;
-  background: #556559;
-  color: #60002f; }
+  box-shadow: inset 0 0 10px #dfc200;
+  background: #ffe113;
+  color: #1a1a1a; }
   .navbar-inverse .navbar-nav > .active > a:hover {
-    background: #4a574d;
-    box-shadow: inset 0 0 10px #323c34;
+    background: #f8d800;
+    box-shadow: inset 0 0 10px #c5ac00;
     color: #fff; }
 
 #map-canvas {
   height: calc(100vh - 50px);
-  border-right: 2px solid #a3b1a6;
-  border-bottom: 2px solid #a3b1a6;
-  border-left: 2px solid #a3b1a6;
+  border-right: 2px solid #fff4ac;
+  border-bottom: 2px solid #fff4ac;
+  border-left: 2px solid #fff4ac;
   width: 100%; }
 
 @media (min-width: 768px) {
@@ -73,11 +76,11 @@ select {
     border-color: black; }
 
 h4 {
-  color: #aaa;
+  color: #e7cd79;
   margin-top: 0; }
 
 h3 {
-  color: #556559;
+  color: black;
   text-align: center;
   margin-top: 0; }
 
@@ -96,30 +99,38 @@ h3 {
   height: 30px;
   padding: 5px 5px;
   background: transparent;
-  border-color: #2d0016;
-  color: #2d0016; }
+  border-color: black;
+  color: black; }
   .day-btn:hover {
     border-color: #fff;
     color: #fff; }
   .day-btn.current-day {
-    background: #2d0016;
-    color: #617365; }
+    background: black;
+    color: #ffe42c; }
     .day-btn.current-day:hover {
       background: #fff; }
 
 .panel-default {
-  background: #f0f2f0;
+  box-shadow: 2px 2px 5px black;
+  background: white;
   border-radius: 8px;
   border-width: 0;
   margin-bottom: 0; }
   .panel-default .panel-heading {
-    background: #617365;
+    background: #ffe42c;
     border-radius: 8px 8px 0 0; }
   .panel-default .panel-body {
+    background-color: #282828;
     padding: 5px 15px; }
     .panel-default .panel-body > div {
       margin-top: 20px;
       margin-bottom: 20px; }
+
+.selectpicker {
+  background-color: #ffe42c; }
+
+.title {
+  color: #ffe42c; }
 
 .itinerary-item {
   margin: 8px 0; }
@@ -132,9 +143,12 @@ h3 {
     width: 20px; }
 
 #day-title {
+  background-color: #ffe42c;
+  box-shadow: 2px 2px 5px black;
+  color: #282828;
   display: inline-block;
   padding: 5px;
-  border: 1px solid #617365;
+  border: 1px solid #282828;
   border-radius: 5px; }
   #day-title > * {
     display: inline-block;
