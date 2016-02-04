@@ -54,7 +54,7 @@ router.post('/days/:id/:type/:name', function (req, res, next) {
   var type = req.params.type;
   var name = req.params.name;
 
-  typeAdd(type, name, id);
+  typeAdd(type, name, id, res );
 
 });
 //---DELETES EVENT FROM DAY
