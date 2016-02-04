@@ -132,6 +132,10 @@ h3 {
 .title {
   color: #ffe42c; }
 
+canvas {
+  width: 10vw;
+  height: 10vh; }
+
 .itinerary-item {
   margin: 8px 0; }
   .itinerary-item > * {
