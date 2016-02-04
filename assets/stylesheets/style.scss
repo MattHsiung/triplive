@@ -169,8 +169,10 @@ h3 {
   color:#ffe42c;
 }
 canvas { 
-  width: 10vw; 
-  height: 10vh; 
+ 
+  right:0;
+  bottom:-100px;
+  position:absolute;
 }
 
 .itinerary-item {

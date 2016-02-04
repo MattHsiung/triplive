@@ -17,20 +17,17 @@ $(document).ready(function() {
 
 	$('.plus').on('click',
 	function addDay() {
-		if (trip.length>6) return;
-		trip.push( { 
-			hotel: [],
-			restaurant:[],
-			activity: []
-		});
-		
-		$('.day-buttons').append('<button class="btn btn-circle day-btn day">'+trip.length+'</button> ')
-		
+			if (trip.length>6) return;
+			trip.push({ 
+				hotel: [],
+				restaurant:[],
+				activity: []
+			});
+			
+			$('.day-buttons').append('<button class="btn btn-circle day-btn day">'+trip.length+'</button> ')
 		}
 	);
-
 	
-
 	function selectDay(){
 		resetMarkers()
 		$('.day').removeClass('current-day')
@@ -59,10 +56,7 @@ $(document).ready(function() {
 				render(el.next());
 			}
 		}
-
-
 	}
-
 
 	function renderCurrentDay(currentDay){
 		var day = trip[Number(currentDay)-1]
@@ -84,8 +78,6 @@ $(document).ready(function() {
 			})
 		}
 	}
-
-
 
   	function makeMarker(event, id){
   		myLatLng = {
@@ -162,36 +154,34 @@ $(document).ready(function() {
 
 	function removeEvent(id){
 		$("#my-"+id).on('click',  '.remove', function(){
-		$(this).parent().remove();
+			$(this).parent().remove();
 
-		var eventName=$(this).siblings().text()
-		trip[getDay()][id].forEach(function (event, index, array) {
-			if(event.name === eventName) {
-				removeMarker(event.marker);
-				array.splice(index,1);
-			}
-		})
-			
+			var eventName=$(this).siblings().text()
+			trip[getDay()][id].forEach(function (event, index, array) {
+				if(event.name === eventName) {
+					removeMarker(event.marker);
+					array.splice(index,1);
+				}
+			})
 		})
 	}
 
 	$('#day-title').on('click', '.remove', deleteDay)
 	$(document).on('click', '.day', selectDay)
-	
 
-	  addEvent('hotel')
-	  addEvent('restaurant')
-	  addEvent('activity') 
-	  removeEvent('hotel')
-	  removeEvent('restaurant')
-	  removeEvent('activity')
+	addEvent('hotel')
+	addEvent('restaurant')
+	addEvent('activity') 
+	removeEvent('hotel')
+	removeEvent('restaurant')
+	removeEvent('activity')
 });
 //---------
 var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
 			var renderer = new THREE.WebGLRenderer({alpha:true});
-			renderer.setSize( window.innerWidth/8, window.innerHeight/8 );
+			renderer.setSize( 200, 100);
 			$('#control-panel').append( renderer.domElement );
 
 			var texture = THREE.ImageUtils.loadTexture( "/images/1.gif" );
