@@ -4,7 +4,10 @@ var models = require('../models');
 var Hotel = models.Hotel;
 var Restaurant = models.Restaurant;
 var Activity = models.Activity;
+var Day = models.Day;
 var Promise = require('bluebird');
+
+
 
 router.get('/', function(req, res) {
   Promise.all([
@@ -19,7 +22,10 @@ router.get('/', function(req, res) {
         all_activities: activities
       });
     })
-
 })
+
+
+
+
 
 module.exports = router;
