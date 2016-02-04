@@ -1,10 +1,6 @@
 $(document).ready(function() {
-  	var map = initialize_gmaps();
-  	var icons = {
-		hotel:'/images/banana.gif',
-		restaurant: '/images/restaurant.png',
-		activity:'/images/star-3.png'
-	}
+  var map = initialize_gmaps();
+	$.post('/api/days/1');
 	var markers=[];
 
 	var trip = [
@@ -15,7 +11,8 @@ $(document).ready(function() {
 		}
 	]
 
-	$('.plus').on('click',
+	$('.plus').on('click', addDay);
+
 	function addDay() {
 			if (trip.length>6) return;
 			trip.push({ 
@@ -24,15 +21,13 @@ $(document).ready(function() {
 				activity: []
 			});
 			var dayToCreate = $('.day-buttons').children().length;
-			console.log(num_of_days);
-			$.post('api/day/'+dayToCreate, function(response) {
-				
+			$.post('api/days/'+dayToCreate, function(response) {
+				console.log(response);
 			})
 
 
 			$('.day-buttons').append('<button class="btn btn-circle day-btn day">'+trip.length+'</button> ')
-		}
-	);
+	}
 	
 	function selectDay(){
 		resetMarkers()
@@ -46,9 +41,9 @@ $(document).ready(function() {
 	
 	function deleteDay(){
 		if(trip.length===1) return;
-		console.log(getDay());
 		resetMarkers();
 		trip.splice(getDay(), 1)
+		$.delete('/api/days/'+(getDay()+1));
 		if(getDay()>0)selectDay.call($('.current-day').prev())
 		else selectDay.call($('.current-day'))	
 		$('.current-day').next().remove()
@@ -154,6 +149,9 @@ $(document).ready(function() {
 				trip[getDay()][id].push(currentEvent);
 				$("#my-"+id).append(itineraryItem(eventName))
 				makeMarker(currentEvent, id);
+				$.post('api/days/'+(getDay()+1)+'/'+id+'/'+eventName, function(){
+					console.log('succes!')
+				})
 			}			
 		})
 	}
@@ -169,6 +167,9 @@ $(document).ready(function() {
 					array.splice(index,1);
 				}
 			})
+			$.delete('api/days/'+(getDay()+1)+'/'+id+'/'+eventName, function(){
+					console.log('succes!')
+				})
 		})
 	}
 
@@ -208,3 +209,27 @@ var scene = new THREE.Scene();
 			};
 
 			render();
+
+jQuery.each( [ "put", "delete" ], function( i, method ) {
+  jQuery[ method ] = function( url, data, callback, type ) {
+    if ( jQuery.isFunction( data ) ) {
+      type = type || callback;
+      callback = data;
+      data = undefined;
+    }
+ 
+    return jQuery.ajax({
+      url: url,
+      type: method,
+      dataType: type,
+      data: data,
+      success: callback
+    });
+  };
+});
+
+
+
+
+
+
