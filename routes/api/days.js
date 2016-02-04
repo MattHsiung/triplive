@@ -91,7 +91,7 @@ router.get('/days/:id/:type', function (requ, res, next) {
 router.get('/days/:id', function (req, res, next) {
   //Get the information for the given day
   var id= req.params.id;
-  Day.find({number:id})
+  Day.findOne({number:id}).populate('hotel').populate('restaurants').populate('activities')
   .then(function(obj) {
     res.send(obj);
   })

@@ -59,14 +59,27 @@ $(document).ready(function() {
 		}
 	}
 
+	function deplural(type) {
+  	return (type==="activities") ? "activity" : type.slice(0,-1);
+}
+
+
 	function renderCurrentDay(currentDay){
-		var day = trip[Number(currentDay)-1]
-		for( var key in day){
-			day[key].forEach(function(el){
-				$("#my-"+key).append(itineraryItem(el.name))
-				resetMarkers(map);
-			})
-		}
+		// var day = trip[Number(currentDay)-1]
+		
+		$.get('api/days/'+currentDay, function(day) {
+			for( var key in day){
+				if(key === 'hotel') {
+					$("#my-"+key).append(itineraryItem(day[key].name));
+					
+				} else if (key === 'activities' || key === 'restaurants') {
+					day[key].forEach(function(el){
+						$("#my-"+deplural(key)).append(itineraryItem(el.name));
+						resetMarkers(map);
+					});
+				}
+			}	
+		});
 	}
 
 	function resetMarkers(mappy){
