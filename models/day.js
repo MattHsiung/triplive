@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 
-var DaySchema = new mongoose.Schema({
+var Schema = mongoose.Schema;
+
+var DaySchema = new Schema({
   number: Number,
   hotel: {type: Schema.Types.ObjectId, ref: 'Hotel'},
   restaurants: [{type: Schema.Types.ObjectId, ref: 'Restaurant'}], 

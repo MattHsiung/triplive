@@ -23,7 +23,13 @@ $(document).ready(function() {
 				restaurant:[],
 				activity: []
 			});
-			
+			var dayToCreate = $('.day-buttons').children().length;
+			console.log(num_of_days);
+			$.post('api/day/'+dayToCreate, function(response) {
+				
+			})
+
+
 			$('.day-buttons').append('<button class="btn btn-circle day-btn day">'+trip.length+'</button> ')
 		}
 	);
