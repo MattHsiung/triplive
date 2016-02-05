@@ -16,6 +16,7 @@
     "express": "^4.13.3",
     "jquery": "2.1.4",
     "mongoose": "^4.1.2",
+    "mongoose-unique-validator": "^0.6.2",
     "morgan": "^1.6.1",
     "swig": "^1.4.2"
   },

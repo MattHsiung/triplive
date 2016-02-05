@@ -3,30 +3,24 @@ $(document).ready(function() {
 	$.post('/api/days/1');
 	var markers=[];
 
-	var trip = [
-		{
-			hotel: [],
-			restaurant: [],
-			activity: []
-		}
-	]
+	var tripMarkers = [[]];
 
 	$('.plus').on('click', addDay);
 
 	function addDay() {
-			if (trip.length>6) return;
-			trip.push({ 
-				hotel: [],
-				restaurant:[],
-				activity: []
-			});
+			// if (trip.length>6) return;
+			// trip.push({ 
+			// 	hotel: [],
+			// 	restaurant:[],
+			// 	activity: []
+			// });
 			var dayToCreate = $('.day-buttons').children().length;
 			$.post('api/days/'+dayToCreate, function(response) {
 				console.log(response);
 			})
 
 
-			$('.day-buttons').append('<button class="btn btn-circle day-btn day">'+trip.length+'</button> ')
+			$('.day-buttons').append('<button class="btn btn-circle day-btn day">'+dayToCreate+'</button> ')
 	}
 	
 	function selectDay(){
@@ -85,27 +79,29 @@ $(document).ready(function() {
 	function resetMarkers(mappy){
 		var mappy = mappy || null;
 
-		for(var key in trip[getDay()]) {
-			trip[getDay()][key].forEach(function (event) {
-				event.marker.setMap(null);
-				if (mappy) makeMarker(event, key);
+			markers.forEach(function(mrk) {
+				mrk.setMap(null);
 			})
-		}
+
+			tripMarkers[getDay()].forEach(function (location) {
+				if (mappy) makeMarker(location);
+			})
 	}
 
-  	function makeMarker(event, id){
+  	function makeMarker(location){
   		myLatLng = {
-			lat: event.place[0].location[0],
-			lng: event.place[0].location[1]
+			lat: location[0],
+			lng: location[1]
 		}
 
-		event.marker = new google.maps.Marker({
+		var marker = new google.maps.Marker({
 			position: myLatLng,
 			map: map,
 			icon: '/images/'+Math.floor(Math.random()*10) +'.gif' ,
 			animation: google.maps.Animation.BOUNCE
 		});
-		markers.push(event.marker)
+		
+		markers.push(marker)
 
 		var bounds = new google.maps.LatLngBounds();
 			for (var i = 0; i < markers.length; i++) {
@@ -158,14 +154,22 @@ $(document).ready(function() {
 			var eventName = $("#"+id+" select option:selected").val()
 			var currentEvent = findEvent(id, eventName);
 
-			if(trip[getDay()][id].indexOf(currentEvent)<0 ){
-				trip[getDay()][id].push(currentEvent);
-				$("#my-"+id).append(itineraryItem(eventName))
-				makeMarker(currentEvent, id);
-				$.post('api/days/'+(getDay()+1)+'/'+id+'/'+eventName, function(){
-					console.log('succes!')
+			// if(trip[getDay()][id].indexOf(currentEvent)<0 ){
+			// 	trip[getDay()][id].push(currentEvent);
+				
+				// makeMarker(currentEvent, id);
+				$.post('api/days/'+(getDay()+1)+'/'+id+'/'+eventName, function(resLocation){
+					console.log(resLocation);
+					if(resLocation) {
+						tripMarkers[getDay()].push(resLocation);
+						makeMarker(resLocation);
+						$("#my-"+id).append(itineraryItem(eventName))		
+					} else {
+						console.log('Already Exists!')	
+					}
+					
 				})
-			}			
+			
 		})
 	}
 

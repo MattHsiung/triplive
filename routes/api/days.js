@@ -12,23 +12,43 @@ function plural(type) {
   return (type==="activity") ? "activities" : type+"s";
 }
 
-function typeAdd(type, name, id, res) {
-  var modelName = type.slice(0,1).toUpperCase()+type.slice(1);
 
+//------ADDS EVENTS TO DAYS
+router.post('/days/:id/:type/:name', function (req, res, next) {
+  //Add event on the give day (id) where type is the event type
+  var id= Number(req.params.id);
+  var type = req.params.type;
+  var name = req.params.name;
+
+  var modelName = type.slice(0,1).toUpperCase()+type.slice(1);
+  var markersLL = null;
   mongoose.model(modelName).findOne({name: name})
   .then(function(result){
       Day.findOne({number: id})
       .then(function(day) { 
-        if (type!="hotel") day[plural(type)].push(result._id);
-        else day[type] = result._id;
+        if (type!="hotel" && day[plural(type)].indexOf(result._id)<0) {
+          day[plural(type)].push(result._id);
+          markersLL = result.place[0].location;
+          console.log('accessed!');
+        }
+        else if(type === 'hotel' && !day[type]){
+            day[type] = result._id; 
+            markersLL = result.place[0].location;
+            console.log('here too!');
+        }
         return day.save();
       }).then(function(day){
-        res.send('done')
+        res.json(markersLL);
       })
   })
-}
+});
 
-function typeDelete(type, name, id, res) {
+//---DELETES EVENT FROM DAY
+router.delete('/days/:id/:type/:name', function (req, res, next) {
+  var id= Number(req.params.id);
+  var type = req.params.type;
+  var name = req.params.name;
+
   var modelName = type.slice(0,1).toUpperCase()+type.slice(1);
 
   mongoose.model(modelName).findOne({name: name})
@@ -44,26 +64,6 @@ function typeDelete(type, name, id, res) {
         res.send('please!')
       })
   })
-}
-
-
-//------ADDS EVENTS TO DAYS
-router.post('/days/:id/:type/:name', function (req, res, next) {
-  //Add event on the give day (id) where type is the event type
-  var id= Number(req.params.id);
-  var type = req.params.type;
-  var name = req.params.name;
-
-  typeAdd(type, name, id, res );
-
-});
-//---DELETES EVENT FROM DAY
-router.delete('/days/:id/:type/:name', function (req, res, next) {
-  var id= Number(req.params.id);
-  var type = req.params.type;
-  var name = req.params.name;
-
-  typeDelete(type,name, id, res);
 
 })
 
