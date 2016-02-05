@@ -14,6 +14,7 @@ $(document).ready(function() {
 			// 	restaurant:[],
 			// 	activity: []
 			// });
+			tripMarkers.push([]);
 			var dayToCreate = $('.day-buttons').children().length;
 			$.post('api/days/'+dayToCreate, function(response) {
 				console.log(response);
