@@ -1,19 +1,14 @@
 $(document).ready(function() {
   var map = initialize_gmaps();
 	$.post('/api/days/1');
-	var markers=[];
+	var markers={};
 
 	var tripMarkers = [[]];
 
 	$('.plus').on('click', addDay);
 
 	function addDay() {
-			// if (trip.length>6) return;
-			// trip.push({ 
-			// 	hotel: [],
-			// 	restaurant:[],
-			// 	activity: []
-			// });
+
 			tripMarkers.push([]);
 			var dayToCreate = $('.day-buttons').children().length;
 			$.post('api/days/'+dayToCreate, function(response) {
@@ -25,7 +20,7 @@ $(document).ready(function() {
 	}
 	
 	function selectDay(){
-		resetMarkers()
+		resetMarkers(null)
 		$('.day').removeClass('current-day')
 		$(this).toggleClass('current-day')
 		var currentDay = getDay()+1
@@ -35,9 +30,8 @@ $(document).ready(function() {
 	}
 	
 	function deleteDay(){
-		if(trip.length===1) return;
-		resetMarkers();
-		trip.splice(getDay(), 1)
+		if(tripMarkers.length===1) return;
+		resetMarkers(null);
 		$.delete('/api/days/'+(getDay()+1));
 		if(getDay()>0)selectDay.call($('.current-day').prev())
 		else selectDay.call($('.current-day'))	
@@ -60,54 +54,54 @@ $(document).ready(function() {
 
 
 	function renderCurrentDay(currentDay){
-		// var day = trip[Number(currentDay)-1]
+		
 		
 		$.get('api/days/'+currentDay, function(day) {
 			for( var key in day){
 				if(key === 'hotel') {
 					$("#my-"+key).append(itineraryItem(day[key].name));
-					
+					resetMarkers(map, day[key].name);
 				} else if (key === 'activities' || key === 'restaurants') {
 					day[key].forEach(function(el){
 						$("#my-"+deplural(key)).append(itineraryItem(el.name));
-						resetMarkers(map);
+						resetMarkers(map, el.name);
 					});
 				}
 			}	
 		});
 	}
 
-	function resetMarkers(mappy){
+	function resetMarkers(mappy, name){
 		var mappy = mappy || null;
 
-			markers.forEach(function(mrk) {
-				mrk.setMap(null);
-			})
+			for(var mrk in markers) {
+				markers[mrk].setMap(null);
+			}
 
 			tripMarkers[getDay()].forEach(function (location) {
-				if (mappy) makeMarker(location);
+				if (mappy) makeMarker(location, name);
 			})
 	}
 
-  	function makeMarker(location){
+  	function makeMarker(location, name){
   		myLatLng = {
-			lat: location[0],
-			lng: location[1]
-		}
+				lat: location[0],
+				lng: location[1]
+			}
 
-		var marker = new google.maps.Marker({
-			position: myLatLng,
-			map: map,
-			icon: '/images/'+Math.floor(Math.random()*10) +'.gif' ,
-			animation: google.maps.Animation.BOUNCE
-		});
-		
-		markers.push(marker)
+			var marker = new google.maps.Marker({
+				position: myLatLng,
+				map: map,
+				icon: '/images/'+Math.floor(Math.random()*10) +'.gif' ,
+				animation: google.maps.Animation.BOUNCE
+			});
+			
+			markers[name] = marker;
 
-		var bounds = new google.maps.LatLngBounds();
-			for (var i = 0; i < markers.length; i++) {
- 			bounds.extend(markers[i].getPosition());
-		}
+			var bounds = new google.maps.LatLngBounds();
+				for (var key in markers) {
+	 			bounds.extend(markers[key].getPosition());
+			}
 
 		map.fitBounds(bounds);
 
@@ -155,15 +149,14 @@ $(document).ready(function() {
 			var eventName = $("#"+id+" select option:selected").val()
 			var currentEvent = findEvent(id, eventName);
 
-			// if(trip[getDay()][id].indexOf(currentEvent)<0 ){
-			// 	trip[getDay()][id].push(currentEvent);
+
 				
 				// makeMarker(currentEvent, id);
 				$.post('api/days/'+(getDay()+1)+'/'+id+'/'+eventName, function(resLocation){
 					console.log(resLocation);
 					if(resLocation) {
 						tripMarkers[getDay()].push(resLocation);
-						makeMarker(resLocation);
+						makeMarker(resLocation, eventName);
 						$("#my-"+id).append(itineraryItem(eventName))		
 					} else {
 						console.log('Already Exists!')	
@@ -178,14 +171,16 @@ $(document).ready(function() {
 		$("#my-"+id).on('click',  '.remove', function(){
 			$(this).parent().remove();
 
-			var eventName=$(this).siblings().text()
-			trip[getDay()][id].forEach(function (event, index, array) {
-				if(event.name === eventName) {
-					removeMarker(event.marker);
-					array.splice(index,1);
-				}
-			})
+			var eventName=$(this).siblings().text();
+			removeMarker(markers[eventName]);
+			// trip[getDay()][id].forEach(function (event, index, array) {
+			// 	if(event.name === eventName) {
+			// 		removeMarker(event.marker);
+			// 		array.splice(index,1);
+			// 	}
+			// })
 			$.delete('api/days/'+(getDay()+1)+'/'+id+'/'+eventName, function(){
+
 					console.log('succes!')
 				})
 		})
