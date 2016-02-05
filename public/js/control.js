@@ -20,7 +20,7 @@ $(document).ready(function() {
 	}
 	
 	function selectDay(){
-		resetMarkers(null)
+		resetMarkers()
 		$('.day').removeClass('current-day')
 		$(this).toggleClass('current-day')
 		var currentDay = getDay()+1
@@ -31,7 +31,7 @@ $(document).ready(function() {
 	
 	function deleteDay(){
 		if(tripMarkers.length===1) return;
-		resetMarkers(null);
+		resetMarkers();
 		$.delete('/api/days/'+(getDay()+1));
 		if(getDay()>0)selectDay.call($('.current-day').prev())
 		else selectDay.call($('.current-day'))	
@@ -60,28 +60,26 @@ $(document).ready(function() {
 			for( var key in day){
 				if(key === 'hotel') {
 					$("#my-"+key).append(itineraryItem(day[key].name));
-					resetMarkers(map, day[key].name);
+					makeMarker(day[key].place[0].location, day[key].name);
+					// resetMarkers(map, day[key].name);
 				} else if (key === 'activities' || key === 'restaurants') {
 					day[key].forEach(function(el){
 						$("#my-"+deplural(key)).append(itineraryItem(el.name));
-						resetMarkers(map, el.name);
+						makeMarker(el.place[0].location, el.name);
+						// resetMarkers(map, el.name);
 					});
 				}
 			}	
 		});
 	}
 
-	function resetMarkers(mappy, name){
-		var mappy = mappy || null;
+	function resetMarkers(){
 
 			for(var mrk in markers) {
 				markers[mrk].setMap(null);
 			}
-
-			tripMarkers[getDay()].forEach(function (location) {
-				if (mappy) makeMarker(location, name);
-			})
 	}
+
 
   	function makeMarker(location, name){
   		myLatLng = {
